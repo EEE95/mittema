@@ -175,3 +175,8 @@ require get_template_directory() . '/inc/customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
+
+function mittema_enqueue_scripts() {
+    wp_enqueue_script( 'menu-script', get_template_directory_uri() . '/js/menu.js', array(), '1.0', true );
+}
+add_action( 'wp_enqueue_scripts', 'mittema_enqueue_scripts' );

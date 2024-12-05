@@ -97,3 +97,40 @@
 		}
 	}
 }() );
+
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("sidebar-nav");
+    const menuToggle = document.querySelector(".menu-toggle");
+    const slidingMenu = document.getElementById("sliding-menu");
+
+    // Åbn eller luk sliding-menu, når burger-menuen klikkes
+    menuToggle.addEventListener("click", function (event) {
+        const isOpen = slidingMenu.classList.contains("open");
+
+        // Toggle sliding menu
+        if (isOpen) {
+            slidingMenu.classList.remove("open");
+        } else {
+            slidingMenu.classList.add("open");
+        }
+
+        // Tilføj åbning af animation for burger-menu linjerne
+        this.classList.toggle('open');
+
+        event.stopPropagation(); // Stop event propagation for at undgå at trigge document click
+    });
+
+    // Luk sliding-menuen, når du klikker udenfor
+    document.addEventListener("click", function (event) {
+        if (!slidingMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            slidingMenu.classList.remove("open");
+            menuToggle.classList.remove("open");  // Sørg for, at burger-menuen også lukkes
+        }
+    });
+
+    // Forhindr lukning af menuen når der klikkes inde i sliding-menu
+    slidingMenu.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+});
+
