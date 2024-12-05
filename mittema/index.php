@@ -31,9 +31,9 @@ get_header();
 	<div class="text-section">
 		<?php
 		// Fetch customizer values for the text section
-		$text_title = get_theme_mod( 'text_section_title', __( 'Your Section Title', 'mittema' ) );
-		$text_subtitle = get_theme_mod( 'text_section_subtitle', __( 'Your Section Subtitle', 'mittema' ) );
-		$text_content = get_theme_mod( 'text_section_content', __( 'Your content goes here. Customize this text in the Customizer.', 'mittema' ) );
+		$text_title = get_theme_mod( 'text_section_title', __( 'Your Title', 'mittema' ) );
+		$text_subtitle = get_theme_mod( 'text_section_subtitle', __( 'Your Subtitle', 'mittema' ) );
+		$text_content = get_theme_mod( 'text_section_content', __( 'Your content goes here. Customize this text in the Customizer. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ', 'mittema' ) );
 		?>
 		<div class="text-container">
 			<h1 class="text-title"><?php echo esc_html( $text_title ); ?></h1>

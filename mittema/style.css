@@ -995,6 +995,7 @@ textarea {
 }
 
 /*---------- Forside ----------*/
+/* Hero-section */
 .hero-section{
 	width: calc(100% - 70px);
 }
@@ -1004,4 +1005,19 @@ textarea {
 	height: auto;
 	object-fit: cover;
 	top: 0;
+}
+
+/* text / intro sektion*/
+.text-section{
+	width: 100%;
+	text-align: center;
+	font-family: var(--font-primary);
+	padding: var(--gutter);
+	background-color: var(--color-bg-light);
+	margin-top: calc(var(--gutter) * 2);
+}
+
+.text-section p{
+	width: calc(50% + 70px);
+	margin: 0 auto;
 }
