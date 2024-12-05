@@ -136,7 +136,7 @@ hr {
  */
 pre {
 	font-family: monospace, monospace;
-	font-size: 1em;
+	font-size: var(--font-size-medium);
 }
 
 /* Text-level semantics
@@ -175,7 +175,7 @@ code,
 kbd,
 samp {
 	font-family: monospace, monospace;
-	font-size: 1em;
+	font-size: var(--font-size-medium);
 }
 
 /**
@@ -228,7 +228,7 @@ optgroup,
 select,
 textarea {
 	font-family: inherit;
-	font-size: 100%;
+	font-size: var(--font-size-medium);
 	line-height: 1.15;
 	margin: 0;
 }
@@ -410,10 +410,6 @@ html {
 	box-sizing: border-box;
 }
 
-/*--------------------------------------------------------------
-# Base
---------------------------------------------------------------*/
-
 /* Typography
 --------------------------------------------- */
 body,
@@ -422,9 +418,9 @@ input,
 select,
 optgroup,
 textarea {
-	color: #404040;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	font-size: 1rem;
+	color: vat(--color-black);
+	font-family: var(--font-primary)
+	font-size: var(--font-size-medium);
 	line-height: 1.5;
 }
 
@@ -435,10 +431,11 @@ h4,
 h5,
 h6 {
 	clear: both;
+	font-family: var(--font-secondary);
 }
 
 p {
-	margin-bottom: 1.5em;
+	margin-bottom: var(--gutter);
 }
 
 dfn,
@@ -449,62 +446,62 @@ i {
 }
 
 blockquote {
-	margin: 0 1.5em;
+	margin: 0 var(--gutter);
 }
 
 address {
-	margin: 0 0 1.5em;
+	margin: 0 0 var(--gutter);
 }
 
 pre {
-	background: #eee;
-	font-family: "Courier 10 Pitch", courier, monospace;
+	background: var(--color-bg-light);
+	font-family: var(--font-primary);
 	line-height: 1.6;
-	margin-bottom: 1.6em;
+	margin-bottom: var(--gutter);
 	max-width: 100%;
 	overflow: auto;
-	padding: 1.6em;
+	padding: var(--gutter);
 }
 
 code,
 kbd,
 tt,
 var {
-	font-family: monaco, consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+	font-family: var(--font-primary);
 }
 
 abbr,
 acronym {
-	border-bottom: 1px dotted #666;
+	border-bottom: 1px dotted var(--color-dark);
 	cursor: help;
 }
 
 mark,
 ins {
-	background: #fff9c0;
+	background: vae(--color-bg-light);
 	text-decoration: none;
 }
 
 big {
-	font-size: 125%;
+	font-size: var(--font-size-large);
 }
 
 /* Elements
 --------------------------------------------- */
 body {
-	background: #fff;
+	background: var(--color-bg);
 }
 
 hr {
-	background-color: #ccc;
+	background-color: var(--color-white);
 	border: 0;
 	height: 1px;
-	margin-bottom: 1.5em;
+	margin-bottom: var(--gutter);
 }
 
 ul,
 ol {
-	margin: 0 0 1.5em 3em;
+	margin: 0 0 var(--gutter) calc(var(--gutter) * 2);
 }
 
 ul {
@@ -518,7 +515,7 @@ ol {
 li > ul,
 li > ol {
 	margin-bottom: 0;
-	margin-left: 1.5em;
+	margin-left: var(--gutter);
 }
 
 dt {
@@ -526,7 +523,7 @@ dt {
 }
 
 dd {
-	margin: 0 1.5em 1.5em;
+	margin: 0 var(--gutter) var(--gutter);
 }
 
 /* Make sure embeds and iframes fit their containers. */
@@ -546,28 +543,28 @@ figure {
 }
 
 table {
-	margin: 0 0 1.5em;
+	margin: 0 0 var(--gutter);
 	width: 100%;
 }
 
 /* Links
 --------------------------------------------- */
 a {
-	color: #4169e1;
+	color: var(--color-bg-light);
 }
 
 a:visited {
-	color: #800080;
+	color: var(--color-accent);
 }
 
 a:hover,
 a:focus,
 a:active {
-	color: #191970;
+	color: var(--color-accent);
 }
 
 a:focus {
-	outline: thin dotted;
+	outline: thin solid;
 }
 
 a:hover,
@@ -582,9 +579,9 @@ input[type="button"],
 input[type="reset"],
 input[type="submit"] {
 	border: 1px solid;
-	border-color: #ccc #ccc #bbb;
+	border-color: var(--color-bg) var(--color-bg) var(--color-bg-dark);
 	border-radius: 3px;
-	background: #e6e6e6;
+	background: var(--color-light);
 	color: rgba(0, 0, 0, 0.8);
 	line-height: 1;
 	padding: 0.6em 1em 0.4em;
@@ -594,7 +591,7 @@ button:hover,
 input[type="button"]:hover,
 input[type="reset"]:hover,
 input[type="submit"]:hover {
-	border-color: #ccc #bbb #aaa;
+	border-color: var(--color-bg) var(--color-bg-dark) var(--color-bg);
 }
 
 button:active,
@@ -605,7 +602,7 @@ input[type="reset"]:active,
 input[type="reset"]:focus,
 input[type="submit"]:active,
 input[type="submit"]:focus {
-	border-color: #aaa #bbb #bbb;
+	border-color: var(--color-bg) var(--color-bg-dark) var(--color-bg-dark);
 }
 
 input[type="text"],
@@ -624,8 +621,8 @@ input[type="datetime"],
 input[type="datetime-local"],
 input[type="color"],
 textarea {
-	color: #666;
-	border: 1px solid #ccc;
+	color: var(--color-dark);
+	border: 1px solid var(--color-light);
 	border-radius: 3px;
 	padding: 3px;
 }
@@ -646,11 +643,11 @@ input[type="datetime"]:focus,
 input[type="datetime-local"]:focus,
 input[type="color"]:focus,
 textarea:focus {
-	color: #111;
+	color: var(--color-black);
 }
 
 select {
-	border: 1px solid #ccc;
+	border: 1px solid var(--color-light);
 }
 
 textarea {
@@ -666,7 +663,7 @@ textarea {
 
 .post,
 .page {
-	margin: 0 0 1.5em;
+	margin: 0 0 var(--gutter);
 }
 
 .updated:not(.published) {
@@ -676,12 +673,12 @@ textarea {
 .page-content,
 .entry-content,
 .entry-summary {
-	margin: 1.5em 0 0;
+	margin: var(--gutter) 0 0;
 }
 
 .page-links {
 	clear: both;
-	margin: 0 0 1.5em;
+	margin: 0 0 var(--gutter);
 }
 
 /* Comments
@@ -697,7 +694,7 @@ textarea {
 /* Widgets
 --------------------------------------------- */
 .widget {
-	margin: 0 0 1.5em;
+	margin: 0 0 var(--gutter);
 }
 
 .widget select {
@@ -723,7 +720,7 @@ textarea {
 /* Captions
 --------------------------------------------- */
 .wp-caption {
-	margin-bottom: 1.5em;
+	margin-bottom: var(--gutter);
 	max-width: 100%;
 }
 
@@ -744,9 +741,9 @@ textarea {
 /* Galleries
 --------------------------------------------- */
 .gallery {
-	margin-bottom: 1.5em;
+	margin-bottom: var(--gutter);
 	display: grid;
-	grid-gap: 1.5em;
+	grid-gap: var(--gutter);
 }
 
 .gallery-item {
@@ -824,14 +821,14 @@ textarea {
 }
 
 .screen-reader-text:focus {
-	background-color: #f1f1f1;
+	background-color: var(--color-white);
 	border-radius: 3px;
 	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
 	clip: auto !important;
 	clip-path: none;
-	color: #21759b;
+	color: var(--color-accent);
 	display: block;
-	font-size: 0.875rem;
+	font-size: var(--font-size-small);
 	font-weight: 700;
 	height: auto;
 	left: 5px;
@@ -856,8 +853,8 @@ textarea {
 	float: left;
 
 	/*rtl:ignore*/
-	margin-right: 1.5em;
-	margin-bottom: 1.5em;
+	margin-right: var(--gutter);
+	margin-bottom: var(--gutter);
 }
 
 .alignright {
@@ -866,8 +863,8 @@ textarea {
 	float: right;
 
 	/*rtl:ignore*/
-	margin-left: 1.5em;
-	margin-bottom: 1.5em;
+	margin-left: var(--gutter);
+	margin-bottom: var(--gutter);
 }
 
 .aligncenter {
@@ -875,7 +872,7 @@ textarea {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 1.5em;
+	margin-bottom: var(--gutter);
 }
 
 /*---------- Navigation -----------*/
@@ -934,7 +931,7 @@ textarea {
 	text-decoration: none;
 }
 
-/* Small menu. */
+/* Small menu. *//*
 .menu-toggle,
 .main-navigation.toggled ul {
 	display: block;
