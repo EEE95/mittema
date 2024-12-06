@@ -54,12 +54,12 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 # Variables
 --------------------------------------------------------------*/
 :root {
-	--color-primary: #404668;
+	--color-primary: #080808;
 	--color-secondary: #6282ff;
 	--color-accent: #F6B176;
-	--color-bg: #2B324E;
-	--color-bg-light: #666F98;
-	--color-bg-dark: #121F2F;
+	--color-bg: #b0a89d;
+	--color-bg-light: #c6bdaf;
+	--color-bg-dark: #989084;
 	--color-light: #f8f9fa;
 	--color-dark: #343a40;
 	--color-white: #fefefe;
@@ -106,7 +106,7 @@ body {
  */
 main {
 	display: block;
-	padding: 0 0 0 80px;
+	padding: 0 0 0 50px;
 }
 
 /**
@@ -885,7 +885,7 @@ textarea {
     left: 0;
     width: 50px;
     height: 100vh;
-    background-color: var(--color-bg);
+    background-color: var(--color-primary);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -900,7 +900,7 @@ textarea {
     cursor: pointer;
     position: absolute;
     top: 40px;
-    left: 80%;
+    left: 50%;
     transform: translateX(-50%); /* Centrerer burger-menuen horisontalt */
     padding: 10px;
     display: flex;
@@ -938,10 +938,10 @@ textarea {
 .sliding-menu {
     position: fixed;
     top: 0;
-    left: 70px;
+    left: 50px;
     width: 250px;
     height: 100vh;
-    background-color: var(--color-bg);
+    background-color: var(--color-primary);
     transform: translateX(-200%); /* Skubbes til venstre, når det er lukket */
     transition: transform 0.8s ease-in-out;
     z-index: 5;
@@ -997,12 +997,12 @@ textarea {
 /* Hero-section */
 .hero-section {
 	position: relative;
-    width: calc(100%);
+    width: 100%;
 	overflow: hidden;
 }
 
 .hero-section video {
-    width: calc(100% + 70px);
+    width: calc(100% + 50px);
     height: auto;
     object-fit: cover;
     top: 0;
@@ -1037,6 +1037,28 @@ textarea {
     font-family: var(--font-secondary);
 }
 
+@media (max-width: 1250px) {
+	.hero-content {
+		font-size: calc(var(--font-size-large) * 2);
+	}
+}
+
+@media (max-width: 875px) {
+	.hero-content {
+		font-size: calc(var(--font-size-large));
+	}
+}
+
+@media (max-width: 550px) {
+	.hero-content {
+		font-size: calc(var(--font-size-medium));
+	}
+
+	.hero-content h2{
+		display: none;
+	}
+}
+
 /* text / intro sektion */
 .text-section {
     width: 100%;
@@ -1048,6 +1070,30 @@ textarea {
 }
 
 .text-section p {
-    width: calc(50% + 70px);
+    width: calc(50% + 50px);
     margin: 0 auto;
+}
+
+/*---------- page ----------*/
+
+
+
+
+/*---------- Single ---------*/
+
+
+
+
+/*---------- Footer ----------*/
+.site-footer {
+    padding: 20px 0;
+    text-align: center;
+    font-family: var(--font-primary);
+	background-color: var(--color-bg-dark);
+	color: var(--color-light);
+}
+
+.footer-text {
+    margin: 0;
+    font-size: var(--font-size-medium);
 }

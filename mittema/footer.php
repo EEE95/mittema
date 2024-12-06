@@ -11,22 +11,18 @@
 
 ?>
 
-	<footer id="colophon" class="site-footer">
-		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'mittema' ) ); ?>">
-				<?php
-				/* translators: %s: CMS name, i.e. WordPress. */
-				printf( esc_html__( 'Proudly powered by %s', 'mittema' ), 'WordPress' );
-				?>
-			</a>
-			<span class="sep"> | </span>
-				<?php
-				/* translators: 1: Theme name, 2: Theme author. */
-				printf( esc_html__( 'Theme: %1$s by %2$s.', 'mittema' ), 'mittema', '<a href="http://underscores.me/">Elisabeth</a>' );
-				?>
-		</div><!-- .site-info -->
-	</footer><!-- #colophon -->
-</div><!-- #page -->
+	<footer class="site-footer" style="
+		background-color: <?php echo esc_attr(get_theme_mod('footer_bg_color', '#989084')); ?>;
+		color: <?php echo esc_attr(get_theme_mod('footer_text_color', '#ffffff')); ?>;
+	">
+		<div class="container">
+			<p class="footer-text">
+				<?php echo esc_html(get_theme_mod('footer_text', __('© 2024 Your Website. All Rights Reserved.', 'mittema'))); ?>
+			</p>
+		</div>
+	</footer>
+
+</div>
 
 <?php wp_footer(); ?>
 

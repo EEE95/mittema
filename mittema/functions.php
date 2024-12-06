@@ -74,23 +74,6 @@ function mittema_content_width() {
 }
 add_action( 'after_setup_theme', 'mittema_content_width', 0 );
 
-/**
- * Register widget area.
- */
-function mittema_widgets_init() {
-    register_sidebar(
-        array(
-            'name'          => esc_html__( 'Sidebar', 'mittema' ),
-            'id'            => 'sidebar-1',
-            'description'   => esc_html__( 'Add widgets here.', 'mittema' ),
-            'before_widget' => '<section id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</section>',
-            'before_title'  => '<h2 class="widget-title">',
-            'after_title'   => '</h2>',
-        )
-    );
-}
-add_action( 'widgets_init', 'mittema_widgets_init' );
 
 /**
  * Enqueue scripts and styles.
@@ -195,8 +178,6 @@ function mittema_customize_register($wp_customize) {
         'label'   => __( 'Hero Title', 'mittema' ),
         'section' => 'hero_section',
         'type'    => 'text',
-		'font_size' => '16px',
-		'font_family' => 'Arial',
     ) );
 
     $wp_customize->add_setting( 'hero_subtitle', array(
@@ -207,8 +188,6 @@ function mittema_customize_register($wp_customize) {
         'label'   => __( 'Hero Subtitle', 'mittema' ),
         'section' => 'hero_section',
         'type'    => 'text',
-		'font_size' => '16px',
-		'font_family' => 'Arial',
     ) );
 
     // Text Section
@@ -226,8 +205,6 @@ function mittema_customize_register($wp_customize) {
         'label'   => __( 'Text Section Title', 'mittema' ),
         'section' => 'text_section',
         'type'    => 'text',
-		'font_size' => '16px',
-		'font_family' => 'Arial',
     ) );
 
     $wp_customize->add_setting( 'text_section_subtitle', array(
@@ -238,8 +215,6 @@ function mittema_customize_register($wp_customize) {
         'label'   => __( 'Text Section Subtitle', 'mittema' ),
         'section' => 'text_section',
         'type'    => 'text',
-		'font_size' => '16px',
-		'font_family' => 'Arial',
     ) );
 
     $wp_customize->add_setting( 'text_section_content', array(
@@ -250,9 +225,69 @@ function mittema_customize_register($wp_customize) {
         'label'   => __( 'Text Section Content', 'mittema' ),
         'section' => 'text_section',
         'type'    => 'textarea',
-		'font_size' => '16px',
-		'font_family' => 'Arial',
     ) );
+
+    // Footer Section
+    $wp_customize->add_section('footer_section', array(
+        'title'       => __('Footer Settings', 'mittema'),
+        'priority'    => 120,
+        'description' => __('Customize the footer content.', 'mittema'),
+    ));
+
+    // Footer Text Setting
+    $wp_customize->add_setting('footer_text', array(
+        'default'           => __('© 2024 Your Website. All Rights Reserved.', 'mittema'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ));
+
+    // Footer Text Control
+    $wp_customize->add_control('footer_text_control', array(
+        'label'    => __('Footer Text', 'mittema'),
+        'section'  => 'footer_section',
+        'settings' => 'footer_text',
+        'type'     => 'text',
+    ));
+
+    // Footer Background Color Setting
+    $wp_customize->add_setting('footer_bg_color', array(
+        'default'           => '#989084',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ));
+
+    // Footer Background Color Control
+    $wp_customize->add_control(
+        new WP_Customize_Color_Control(
+            $wp_customize,
+            'footer_bg_color_control',
+            array(
+                'label'    => __('Footer Background Color', 'mittema'),
+                'section'  => 'footer_section',
+                'settings' => 'footer_bg_color',
+            )
+        )
+    );
+
+    // Footer Text Color Setting
+    $wp_customize->add_setting('footer_text_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ));
+
+    // Footer Text Color Control
+    $wp_customize->add_control(
+        new WP_Customize_Color_Control(
+            $wp_customize,
+            'footer_text_color_control',
+            array(
+                'label'    => __('Footer Text Color', 'mittema'),
+                'section'  => 'footer_section',
+                'settings' => 'footer_text_color',
+            )
+        )
+    );
 }
 add_action('customize_register', 'mittema_customize_register');
 
