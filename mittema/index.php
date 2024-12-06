@@ -26,6 +26,10 @@ get_header();
 			<source src="<?php echo esc_url( $hero_video ); ?>" type="video/mp4">
 			<?php _e( 'Your browser does not support the video tag.', 'mittema' ); ?>
 		</video>
+		<div class="hero-content">
+			<h1 class="hero-title"><?php echo esc_html( $hero_title ); ?></h1>
+			<h2 class="hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></h2>
+		</div>
 	</div>
 
 	<div class="text-section">
