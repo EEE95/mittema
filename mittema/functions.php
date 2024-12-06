@@ -291,6 +291,110 @@ function mittema_customize_register($wp_customize) {
 }
 add_action('customize_register', 'mittema_customize_register');
 
+function mittema_cards_customizer($wp_customize) {
+    // Add a Section for Cards
+    $wp_customize->add_section('home_cards_section', array(
+        'title'       => __('Homepage Cards', 'mittema'),
+        'priority'    => 110,
+        'description' => __('Customize the cards on the homepage.', 'mittema'),
+    ));
+
+    // Loop to Add Multiple Cards (e.g., 3 cards)
+    for ($i = 1; $i <= 3; $i++) {
+        // Card Title
+        $wp_customize->add_setting("card_{$i}_title", array(
+            'default'           => __("Card Title {$i}", 'mittema'),
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+        $wp_customize->add_control("card_{$i}_title_control", array(
+            'label'    => __("Card {$i} Title", 'mittema'),
+            'section'  => 'home_cards_section',
+            'settings' => "card_{$i}_title",
+            'type'     => 'text',
+        ));
+
+        // Card Text
+        $wp_customize->add_setting("card_{$i}_text", array(
+            'default'           => __("This is the description for card {$i}.", 'mittema'),
+            'sanitize_callback' => 'sanitize_textarea_field',
+        ));
+        $wp_customize->add_control("card_{$i}_text_control", array(
+            'label'    => __("Card {$i} Text", 'mittema'),
+            'section'  => 'home_cards_section',
+            'settings' => "card_{$i}_text",
+            'type'     => 'textarea',
+        ));
+
+        // Card Image
+        $wp_customize->add_setting("card_{$i}_image", array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+        $wp_customize->add_control(
+            new WP_Customize_Image_Control(
+                $wp_customize,
+                "card_{$i}_image_control",
+                array(
+                    'label'    => __("Card {$i} Image", 'mittema'),
+                    'section'  => 'home_cards_section',
+                    'settings' => "card_{$i}_image",
+                )
+            )
+        );
+
+        // Card Button URL
+        $wp_customize->add_setting("card_{$i}_button_url", array(
+            'default'           => '#',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+        $wp_customize->add_control("card_{$i}_button_url_control", array(
+            'label'    => __("Card {$i} Button URL", 'mittema'),
+            'section'  => 'home_cards_section',
+            'settings' => "card_{$i}_button_url",
+            'type'     => 'url',
+        ));
+
+        // Card Button Text
+        $wp_customize->add_setting("card_{$i}_button_text", array(
+            'default'           => __('Learn More', 'mittema'),
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+        $wp_customize->add_control("card_{$i}_button_text_control", array(
+            'label'    => __("Card {$i} Button Text", 'mittema'),
+            'section'  => 'home_cards_section',
+            'settings' => "card_{$i}_button_text",
+            'type'     => 'text',
+        ));
+    }
+}
+add_action('customize_register', 'mittema_cards_customizer');
+
+function mittema_customize_register_gallery($wp_customize) {
+    $wp_customize->add_section('gallery_section', array(
+        'title'    => __('Gallery Section', 'mittema'),
+        'priority' => 30,
+    ));
+
+    // Tilføj op til 30 billeder med placeholders
+    for ($i = 1; $i <= 30; $i++) {
+        $wp_customize->add_setting("gallery_image_$i", array(
+            'default'           => get_template_directory_uri() . '/assets/placeholder' . $i . '.jpg',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+
+        $wp_customize->add_control(new WP_Customize_Image_Control(
+            $wp_customize,
+            "gallery_image_$i",
+            array(
+                'label'    => __("Gallery Image $i", 'mittema'),
+                'section'  => 'gallery_section',
+                'settings' => "gallery_image_$i",
+            )
+        ));
+    }
+}
+add_action('customize_register', 'mittema_customize_register_gallery');
+
 /**
  * Render the site title for the selective refresh partial.
  *

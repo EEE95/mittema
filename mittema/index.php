@@ -46,35 +46,83 @@ get_header();
 		</div>
 	</div>
 
-    <?php
-    if ( have_posts() ) :
-
-        if ( is_home() && ! is_front_page() ) :
+	<div class="cards-container">
+    <?php for ($i = 1; $i <= 3; $i++) : ?>
+        <div class="card">
+            <?php 
+                $image = get_theme_mod("card_{$i}_image", ''); 
+                $placeholder = get_template_directory_uri() . '/assest/ballon.jpg';
             ?>
-            <header>
-                <h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-            </header>
-            <?php
+            <img src="<?php echo esc_url($image ? $image : $placeholder); ?>" alt="<?php echo esc_attr(get_theme_mod("card_{$i}_title", '')); ?>" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title"><?php echo esc_html(get_theme_mod("card_{$i}_title", __("Card Title {$i}", 'mittema'))); ?></h3>
+                <p class="card-text"><?php echo esc_html(get_theme_mod("card_{$i}_text", __("This is the description for card {$i}.", 'mittema'))); ?></p>
+                <a href="<?php echo esc_url(get_theme_mod("card_{$i}_button_url", '#')); ?>" class="card-button">
+                    <?php echo esc_html(get_theme_mod("card_{$i}_button_text", __('Learn More', 'mittema'))); ?>
+                </a>
+            </div>
+        </div>
+    <?php endfor; ?>
+</div>
+
+<div class="gallery-section">
+    <h2 class="index-title"><?php _e('Gallery', 'mittema'); ?></h2>
+    <div class="gallery-grid">
+        <?php
+        for ($i = 1; $i <= 6; $i++) {
+            $gallery_image = get_theme_mod("gallery_image_$i", get_template_directory_uri() . "/assest/cabin.jpg");
+            if ($gallery_image) {
+                echo '<div class="gallery-item">';
+                echo '<img src="' . esc_url($gallery_image) . '" alt="' . esc_attr__("Gallery Image $i", 'mittema') . '">';
+                echo '</div>';
+            }
+        }
+        ?>
+    </div>
+</div>
+
+<div class="posts-container">
+    <h2 class="index-title"><?php _e('Posts', 'mittema'); ?></h2>
+    <div class="posts">
+        <?php
+        if ( have_posts() ) :
+            while ( have_posts() ) :
+                the_post();
+                ?>
+                <div class="post">
+                    <?php if ( has_post_thumbnail() ) : ?>
+                        <div class="post-thumbnail">
+                            <a href="<?php the_permalink(); ?>">
+                                <?php the_post_thumbnail('medium'); ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <div class="post-content">
+                        <h3 class="post-title">
+                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                        </h3>
+                        <div class="post-meta">
+                            <span class="post-date"><?php echo get_the_date(); ?></span>
+                            <span class="post-author"><?php _e('By', 'mittema'); ?> <?php the_author(); ?></span>
+                        </div>
+                        <p class="post-excerpt"><?php echo wp_trim_words( get_the_excerpt(), 20, '...' ); ?></p>
+                        <a href="<?php the_permalink(); ?>" class="read-more"><?php _e('Read More', 'mittema'); ?></a>
+                    </div>
+                </div>
+                <?php
+            endwhile;
+        else :
+            ?>
+            <p><?php _e( 'No posts found', 'mittema' ); ?></p>
+        <?php
         endif;
+        ?>
+    </div>
+</div>
 
-        /* Start the Loop */
-        while ( have_posts() ) :
-            the_post();
 
-            get_template_part( 'template-parts/content', get_post_type() );
 
-        endwhile;
-
-        the_posts_navigation();
-
-    else :
-
-        get_template_part( 'template-parts/content', 'none' );
-
-    endif;
-    ?>
-</main><!-- #main -->
+</main>
 
 <?php
-get_sidebar();
 get_footer();

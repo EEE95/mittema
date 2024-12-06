@@ -55,7 +55,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 --------------------------------------------------------------*/
 :root {
 	--color-primary: #080808;
-	--color-secondary: #6282ff;
+	--color-secondary: #F6B176;
 	--color-accent: #F6B176;
 	--color-bg: #b0a89d;
 	--color-bg-light: #c6bdaf;
@@ -551,7 +551,7 @@ table {
 /* Links
 --------------------------------------------- */
 a {
-	color: var(--color-bg-light);
+	color: var(--color-light);
 }
 
 a:visited {
@@ -561,7 +561,7 @@ a:visited {
 a:hover,
 a:focus,
 a:active {
-	color: var(--color-accent);
+	color: var(--color-light);
 }
 
 a:focus {
@@ -1070,8 +1070,196 @@ textarea {
 }
 
 .text-section p {
-    width: calc(50% + 50px);
+    width: calc(60% + 50px);
+    margin: 0 auto var(--gutter);
+}
+
+@meadia (min-width: 558px) {
+	.text-section p {
+		width: 90%;
+	}
+}
+
+/* Cards */
+.cards-container {
+    display: flex;
+    gap: var(--gutter);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: var(--gutter) auto;
+	margin-top: calc(var(--gutter) * 3);
+}
+
+.card {
+    background-color: var(--color-bg-light);
+    border: 1px solid var(--color-bg-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    font-family: var(--font-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: var(--font-size-large);
+    margin-bottom: 10px;
+    color: var(--color-light);
+}
+
+.card-text {
+    font-size: var(--font-size-medium);
+    color: var(--color-light);
+    margin-bottom: 15px;
+}
+
+.card-button, .read-more {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: var(--font-size-small);
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+	font-family: var(--font-primary);
+}
+
+.card-button:hover, .read-more:hover {
+    background-color: var(--color-accent);
+}
+
+/* Galleri */
+.gallery-section {
+    padding: var(--gutter) var(--gutter);
+    text-align: center;
+	margin: calc(var(--gutter) * 3) auto;
+	background-color: var(--color-bg-light);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--gutter);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+	border: solid 1px var(--color-bg-dark);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+	padding: var(--gutter);
+}
+
+.gallery-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* post index-page */
+/* Container for hele posts-sektionen */
+.posts-container {
     margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* Titel af posts-sektionen */
+.index-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px; 
+    color: var(--color-primary);
+	text-align: center;
+}
+
+/* Container for alle posts */
+.posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gutter);
+    padding: var(--gutter);
+}
+
+.post {
+    background-color: var(--color-white);
+    padding: var(--gutter);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.post:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Thumbnail (billede) */
+.post-thumbnail {
+    margin-bottom: var(--gutter);
+}
+
+.post-thumbnail img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Post indhold */
+.post-content {
+    padding-top: var(--gutter);
+}
+
+.post-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.post-title a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.post-title a:hover {
+    color: var(--color-secondary);
+}
+
+/* Uddrag af post */
+.post-excerpt {
+    font-size: var(--font-size-medium);
+    color: var(--color-dark);
+    margin-top: var(--gutter);
+	font-family: var(--font-primary);
+}
+
+/* Responsivt design */
+@media (max-width: 768px) {
+    .posts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .posts {
+        grid-template-columns: 1fr;
+    }
 }
 
 /*---------- page ----------*/
