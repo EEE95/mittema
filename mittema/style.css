@@ -1235,7 +1235,7 @@ textarea {
 }
 
 .post-title a {
-    color: var(--color-primary);
+    color: var(--color-accent);
     text-decoration: none;
 }
 
@@ -1347,15 +1347,59 @@ textarea {
 
 .sign-up-container{
 	background-color: var(--color-bg-light);
-	padding: var(--gutter);
+	margin: var(--gutter);
 	border-radius: 3px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/*---------- Single ---------*/
+.post{
+	background-color: var(--color-bg-light);
+	margin: var(--gutter);
+	border-radius: 6px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.post a, span{
+	color: var(--color-black);
+	font-family: var(--font-primary);
+	text-decoration: none;
+}
 
+.post a:hover{
+	color: var(--color-accent);
+}
 
+.post-navigation{
+	padding-left: var(--gutter);
+}
+
+/*---------- Comments ----------*/
+.comments-area h2, h3{
+	padding-left: var(--gutter);
+}
+
+.comments-area a{
+	color: var(--color-black);
+	font-family: var(--font-primary);
+}
+
+.comments-area a:hover{
+	color: var(--color-accent);
+}
+
+.comments-area #submit{
+	background-color: var(--color-primary);
+	color: var(--color-accent);
+	padding: 10px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+}
+
+.comments-area #submit:hover {
+	background-color: var(--color-accent);
+	color: var(--color-light);
+}
 
 /*---------- Footer ----------*/
 .site-footer {
