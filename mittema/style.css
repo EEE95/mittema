@@ -260,6 +260,7 @@ button,
 [type="reset"],
 [type="submit"] {
 	-webkit-appearance: button;
+	appearance: button;
 }
 
 /**
@@ -343,6 +344,7 @@ textarea {
  */
 [type="search"] {
 	-webkit-appearance: textfield;
+	appearance: textfield;
 	outline-offset: -2px;
 }
 
@@ -420,7 +422,7 @@ select,
 optgroup,
 textarea {
 	color: vat(--color-black);
-	font-family: var(--font-primary)
+	font-family: var(--font-primary);
 	font-size: var(--font-size-medium);
 	line-height: 1.5;
 }
@@ -1076,7 +1078,7 @@ textarea {
     margin: 0 auto var(--gutter);
 }
 
-@meadia (min-width: 558px) {
+@media (min-width: 558px) {
 	.text-section p {
 		width: 90%;
 	}
