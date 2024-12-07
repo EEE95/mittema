@@ -12,8 +12,6 @@ if ( ! defined( '_S_VERSION' ) ) {
     define( '_S_VERSION', '1.0.0' );
 }
 
-// Resten af din functions.php fil...
-
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  */
@@ -116,8 +114,9 @@ function mittema_customize_general_settings( $wp_customize ) {
     ));
 
     $colors = array(
-        'primary_color'   => '#404668',
-        'secondary_color' => '#6282ff',
+        '--color-primary-color'   => '#080808',
+        '--color-bg-light' => '#c6bdaf', 
+        '--color-bg-dark' => '#989084',
         'accent_color'    => '#F6B176',
     );
 
@@ -212,7 +211,6 @@ function mittema_customize_cards_section( $wp_customize ) {
         mittema_customize_textarea( $wp_customize, "card_{$i}_text", __("This is the description for card {$i}.", 'mittema'), "Card {$i} Text", 'home_cards_section', 'sanitize_textarea_field' );
         mittema_customize_image_input( $wp_customize, "card_{$i}_image", '', "Card {$i} Image", 'home_cards_section' );
         mittema_customize_text_input( $wp_customize, "card_{$i}_button_url", '#', "Card {$i} Button URL", 'home_cards_section', 'esc_url_raw' );
-        mittema_customize_text_input( $wp_customize, "card_{$i}_button_text", 'Learn More', "Card {$i} Button Text", 'home_cards_section', 'sanitize_text_field' );
     }
 }
 
@@ -221,44 +219,58 @@ function mittema_customize_cards_section( $wp_customize ) {
  */
 function mittema_customize_gallery_section( $wp_customize ) {
     $wp_customize->add_section( 'gallery_section', array(
-        'title'    => __( 'Gallery Section', 'mittema' ),
-        'priority' => 30,
+        'title'       => __( 'Gallery Section', 'mittema' ),
+        'priority'    => 120,
+        'description' => __( 'Customize your gallery section.', 'mittema' ),
     ));
 
-    for ( $i = 1; $i <= 30; $i++ ) {
-        mittema_customize_image_input( $wp_customize, "gallery_image_{$i}", get_template_directory_uri() . '/assets/placeholder' . $i . '.jpg', "Gallery Image {$i}", 'gallery_section' );
-    }
+    // Gallery Settings
+    mittema_customize_gallery_input( $wp_customize, 'gallery_images', array(), 'Gallery Images', 'gallery_section' );
 }
 
 /**
- * Helper function to create a text input control
+ * Helper function to add a text input
  */
 function mittema_customize_text_input( $wp_customize, $setting, $default, $label, $section, $sanitize_callback ) {
-    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => $sanitize_callback ));
+    $wp_customize->add_setting( $setting, array(
+        'default'           => $default,
+        'sanitize_callback' => $sanitize_callback,
+        'transport'         => 'refresh',
+    ));
+
     $wp_customize->add_control( $setting, array(
-        'label'    => __( $label, 'mittema' ),
-        'section'  => $section,
-        'type'     => 'text',
+        'label'   => __( $label, 'mittema' ),
+        'section' => $section,
+        'type'    => 'text',
     ));
 }
 
 /**
- * Helper function to create a textarea control
+ * Helper function to add a textarea input
  */
 function mittema_customize_textarea( $wp_customize, $setting, $default, $label, $section, $sanitize_callback ) {
-    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => $sanitize_callback ));
+    $wp_customize->add_setting( $setting, array(
+        'default'           => $default,
+        'sanitize_callback' => $sanitize_callback,
+        'transport'         => 'refresh',
+    ));
+
     $wp_customize->add_control( $setting, array(
-        'label'    => __( $label, 'mittema' ),
-        'section'  => $section,
-        'type'     => 'textarea',
+        'label'   => __( $label, 'mittema' ),
+        'section' => $section,
+        'type'    => 'textarea',
     ));
 }
 
 /**
- * Helper function to create a color input control
+ * Helper function to add color input
  */
 function mittema_customize_color_input( $wp_customize, $setting, $default, $label, $section ) {
-    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => 'sanitize_hex_color' ));
+    $wp_customize->add_setting( $setting, array(
+        'default' => $default,
+        'transport' => 'refresh',
+    ));
+
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $setting, array(
         'label'    => __( $label, 'mittema' ),
         'section'  => $section,
@@ -267,11 +279,31 @@ function mittema_customize_color_input( $wp_customize, $setting, $default, $labe
 }
 
 /**
- * Helper function to create an image input control
+ * Helper function to add an image input
  */
 function mittema_customize_image_input( $wp_customize, $setting, $default, $label, $section ) {
-    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => 'esc_url_raw' ));
+    $wp_customize->add_setting( $setting, array(
+        'default' => $default,
+        'transport' => 'refresh',
+    ));
+
     $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $setting, array(
+        'label'    => __( $label, 'mittema' ),
+        'section'  => $section,
+        'settings' => $setting,
+    )));
+}
+
+/**
+ * Helper function to add a gallery input
+ */
+function mittema_customize_gallery_input( $wp_customize, $setting, $default, $label, $section ) {
+    $wp_customize->add_setting( $setting, array(
+        'default' => $default,
+        'transport' => 'refresh',
+    ));
+
+    $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, $setting, array(
         'label'    => __( $label, 'mittema' ),
         'section'  => $section,
         'settings' => $setting,
@@ -314,6 +346,3 @@ function mittema_posted_by() {
 
     echo '<span class="byline"> ' . $byline . '</span>'; // WPCS: XSS OK.
 }
-
-// Resten af din functions.php fil...
-
