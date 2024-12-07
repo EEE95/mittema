@@ -437,6 +437,7 @@ h6 {
 
 p {
 	margin-bottom: var(--gutter);
+	font-family: var(--font-primary);
 }
 
 dfn,
@@ -552,6 +553,7 @@ table {
 --------------------------------------------- */
 a {
 	color: var(--color-light);
+	font-family: var(--font-primary);
 }
 
 a:visited {
@@ -664,7 +666,7 @@ textarea {
 
 .post,
 .page {
-	margin: 0 0 var(--gutter);
+	margin: 0;
 }
 
 .updated:not(.published) {
@@ -1263,9 +1265,92 @@ textarea {
 }
 
 /*---------- page ----------*/
+.entry-header {
+	text-align: center;
+}
+
+.entry-title {
+	border-bottom: solid 1px var(--color-black);
+	margin: 0;
+	padding: calc(var(--gutter) * 2);
+	font-size: calc(var(--font-size-large) * 2.5);
+}
+
+.entry-content {
+	padding: var(--gutter);
+}
 
 
+.wp-element-button{
+	background-color: var(--color-primary);
+	color: var(--color-accent);
+	padding: 10px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+}
 
+.wp-element-button:hover {
+	background-color: var(--color-accent);
+}
+
+.bg-color .box-1{
+	background-color: var(--color-bg-dark);
+	padding: var(--gutter);
+	border-radius: 3px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	height: 310px;
+}
+.bg-color .box-1 .wp-block-list{
+	margin: 0;
+	padding: 0 var(--gutter);
+}
+.bg-color{
+	background-color: var(--color-bg-light);
+	padding: 0 var(--gutter);
+	padding-bottom: var(--gutter);
+}
+
+.bg.color p{
+	padding-bottom: 0;
+}
+
+.our-story-box{
+	background-color: var(--color-bg-light);
+	padding: var(--gutter);
+	border-radius: 3px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.is-style-text-subtitle{
+	padding: 0;
+}
+
+.container-boxs{
+	background-color: var(--color-bg-dark);
+	margin-top: var(--gutter);
+	padding: var(--gutter);
+}
+
+.container-box{
+	background-color: var(--color-bg-light);
+}
+
+.container-box figure{
+	padding: 0;
+	margin: 0;
+}
+
+.container-box h3, p{
+	padding: 0 var(--gutter);
+}
+
+.sign-up-container{
+	background-color: var(--color-bg-light);
+	padding: var(--gutter);
+	border-radius: 3px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 /*---------- Single ---------*/
 
