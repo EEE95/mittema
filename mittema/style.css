@@ -1371,6 +1371,10 @@ textarea {
 	color: var(--color-accent);
 }
 
+.post-content .read-more{
+	color: var(--color-accent);
+}
+
 .post-navigation{
 	padding-left: var(--gutter);
 }
