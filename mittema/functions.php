@@ -65,6 +65,32 @@ function mittema_setup() {
 }
 add_action( 'after_setup_theme', 'mittema_setup' );
 
+function mittema_customize_register_gallery($wp_customize) {
+    $wp_customize->add_section('gallery_section', array(
+        'title'    => __('Gallery Section', 'mittema'),
+        'priority' => 30,
+    ));
+
+    // Tilføj op til 30 billeder med placeholders
+    for ($i = 1; $i <= 30; $i++) {
+        $wp_customize->add_setting("gallery_image_$i", array(
+            'default'           => get_template_directory_uri() . '/assets/placeholder' . $i . '.jpg',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+
+        $wp_customize->add_control(new WP_Customize_Image_Control(
+            $wp_customize,
+            "gallery_image_$i",
+            array(
+                'label'    => __("Gallery Image $i", 'mittema'),
+                'section'  => 'gallery_section',
+                'settings' => "gallery_image_$i",
+            )
+        ));
+    }
+}
+add_action('customize_register', 'mittema_customize_register_gallery');
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  */
