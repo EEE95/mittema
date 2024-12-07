@@ -12,6 +12,8 @@ if ( ! defined( '_S_VERSION' ) ) {
     define( '_S_VERSION', '1.0.0' );
 }
 
+// Resten af din functions.php fil...
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  */
@@ -31,7 +33,6 @@ function mittema_setup() {
     add_theme_support(
         'html5',
         array(
-            'search-form',
             'comment-form',
             'comment-list',
             'gallery',
@@ -74,7 +75,6 @@ function mittema_content_width() {
 }
 add_action( 'after_setup_theme', 'mittema_content_width', 0 );
 
-
 /**
  * Enqueue scripts and styles.
  */
@@ -92,362 +92,228 @@ function mittema_scripts() {
 add_action( 'wp_enqueue_scripts', 'mittema_scripts' );
 
 /**
- * Customizer additions.
+ * Register the customizer settings and controls.
  */
-function mittema_customize_register($wp_customize) {
-    // PostMessage support
-    $wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
-    $wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
-    $wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
+function mittema_customize_register( $wp_customize ) {
+    // Common settings and sections
+    mittema_customize_general_settings( $wp_customize );
+    mittema_customize_hero_section( $wp_customize );
+    mittema_customize_text_section( $wp_customize );
+    mittema_customize_footer_section( $wp_customize );
+    mittema_customize_cards_section( $wp_customize );
+    mittema_customize_gallery_section( $wp_customize );
+}
+add_action( 'customize_register', 'mittema_customize_register' );
 
-    if ( isset( $wp_customize->selective_refresh ) ) {
-        $wp_customize->selective_refresh->add_partial(
-            'blogname',
-            array(
-                'selector'        => '.site-title a',
-                'render_callback' => 'mittema_customize_partial_blogname',
-            )
-        );
-        $wp_customize->selective_refresh->add_partial(
-            'blogdescription',
-            array(
-                'selector'        => '.site-description',
-                'render_callback' => 'mittema_customize_partial_blogdescription',
-            )
-        );
-    }
-
-    // Farveindstillinger
-    $wp_customize->add_setting('primary_color', array(
-        'default'   => '#404668',
-        'transport' => 'refresh',
-    ));
-    $wp_customize->add_setting('secondary_color', array(
-        'default'   => '#6282ff',
-        'transport' => 'refresh',
-    ));
-    $wp_customize->add_setting('accent_color', array(
-        'default'   => '#F6B176',
-        'transport' => 'refresh',
-    ));
-
-    // Sektion til farver
-    $wp_customize->add_section('theme_colors', array(
-        'title'    => __('Theme Colors', 'mittema'),
+/**
+ * Add general theme customization options (colors, typography, etc.)
+ */
+function mittema_customize_general_settings( $wp_customize ) {
+    // Color settings
+    $wp_customize->add_section( 'theme_colors', array(
+        'title'    => __( 'Theme Colors', 'mittema' ),
         'priority' => 30,
     ));
 
-    // Kontroller for farver
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'primary_color_control', array(
-        'label'    => __('Primary Color', 'mittema'),
-        'section'  => 'theme_colors',
-        'settings' => 'primary_color',
-    )));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'secondary_color_control', array(
-        'label'    => __('Secondary Color', 'mittema'),
-        'section'  => 'theme_colors',
-        'settings' => 'secondary_color',
-    )));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'accent_color_control', array(
-        'label'    => __('Accent Color', 'mittema'),
-        'section'  => 'theme_colors',
-        'settings' => 'accent_color',
+    $colors = array(
+        'primary_color'   => '#404668',
+        'secondary_color' => '#6282ff',
+        'accent_color'    => '#F6B176',
+    );
+
+    foreach ( $colors as $setting => $default ) {
+        $wp_customize->add_setting( $setting, array( 'default' => $default, 'transport' => 'refresh' ));
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $setting . '_control', array(
+            'label'    => __( ucfirst( str_replace( '_', ' ', $setting ) ), 'mittema' ),
+            'section'  => 'theme_colors',
+            'settings' => $setting,
+        )));
+    }
+
+    // Background Color
+    $wp_customize->add_section( 'colors', array( 'title' => __( 'Farver', 'mittema' ), 'priority' => 30 ));
+    $wp_customize->add_setting( 'background_color', array( 'default' => '#ffffff', 'transport' => 'refresh' ));
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'background_color', array(
+        'label'    => __( 'Baggrundsfarve', 'mittema' ),
+        'section'  => 'colors',
+        'settings' => 'background_color',
     )));
 
-    // Hero Section
+    // Typography settings
+    $wp_customize->add_section( 'typography', array( 'title' => __( 'Typografi', 'mittema' ), 'priority' => 35 ));
+    $wp_customize->add_setting( 'font_family', array( 'default' => 'Arial, sans-serif', 'transport' => 'refresh' ));
+    $wp_customize->add_control( 'font_family', array(
+        'label'    => __( 'Vælg skrifttype', 'mittema' ),
+        'section'  => 'typography',
+        'type'     => 'text',
+    ));
+}
+
+/**
+ * Customize Hero Section
+ */
+function mittema_customize_hero_section( $wp_customize ) {
     $wp_customize->add_section( 'hero_section', array(
         'title'       => __( 'Hero Section', 'mittema' ),
         'priority'    => 30,
         'description' => __( 'Customize the hero section.', 'mittema' ),
-    ) );
+    ));
 
-    $wp_customize->add_setting( 'hero_video', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ) );
-    $wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'hero_video', array(
-        'label'   => __( 'Hero Background Video', 'mittema' ),
-        'section' => 'hero_section',
-    ) ) );
+    // Hero background video, title, subtitle
+    mittema_customize_text_input( $wp_customize, 'hero_video', '', 'Hero Background Video', 'hero_section', 'esc_url_raw' );
+    mittema_customize_text_input( $wp_customize, 'hero_title', __( 'Welcome to My Site', 'mittema' ), 'Hero Title', 'hero_section', 'sanitize_text_field' );
+    mittema_customize_text_input( $wp_customize, 'hero_subtitle', __( 'Your Hero Subtitle', 'mittema' ), 'Hero Subtitle', 'hero_section', 'sanitize_text_field' );
+}
 
-    $wp_customize->add_setting( 'hero_title', array(
-        'default'           => __( 'Welcome to My Site', 'mittema' ),
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-    $wp_customize->add_control( 'hero_title', array(
-        'label'   => __( 'Hero Title', 'mittema' ),
-        'section' => 'hero_section',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'hero_subtitle', array(
-        'default'           => __( 'Your Hero Subtitle', 'mittema' ),
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-    $wp_customize->add_control( 'hero_subtitle', array(
-        'label'   => __( 'Hero Subtitle', 'mittema' ),
-        'section' => 'hero_section',
-        'type'    => 'text',
-    ) );
-
-    // Text Section
+/**
+ * Customize Text Section
+ */
+function mittema_customize_text_section( $wp_customize ) {
     $wp_customize->add_section( 'text_section', array(
         'title'       => __( 'Text Section', 'mittema' ),
         'priority'    => 31,
         'description' => __( 'Customize the text section below the hero.', 'mittema' ),
-    ) );
-
-    $wp_customize->add_setting( 'text_section_title', array(
-        'default'           => __( 'Your Section Title', 'mittema' ),
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-    $wp_customize->add_control( 'text_section_title', array(
-        'label'   => __( 'Text Section Title', 'mittema' ),
-        'section' => 'text_section',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'text_section_subtitle', array(
-        'default'           => __( 'Your Section Subtitle', 'mittema' ),
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-    $wp_customize->add_control( 'text_section_subtitle', array(
-        'label'   => __( 'Text Section Subtitle', 'mittema' ),
-        'section' => 'text_section',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'text_section_content', array(
-        'default'           => __( 'Your content goes here. Customize this text in the Customizer.', 'mittema' ),
-        'sanitize_callback' => 'wp_kses_post',
-    ) );
-    $wp_customize->add_control( 'text_section_content', array(
-        'label'   => __( 'Text Section Content', 'mittema' ),
-        'section' => 'text_section',
-        'type'    => 'textarea',
-    ) );
-
-    // Footer Section
-    $wp_customize->add_section('footer_section', array(
-        'title'       => __('Footer Settings', 'mittema'),
-        'priority'    => 120,
-        'description' => __('Customize the footer content.', 'mittema'),
     ));
 
-    // Footer Text Setting
-    $wp_customize->add_setting('footer_text', array(
-        'default'           => __('© 2024 Your Website. All Rights Reserved.', 'mittema'),
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ));
-
-    // Footer Text Control
-    $wp_customize->add_control('footer_text_control', array(
-        'label'    => __('Footer Text', 'mittema'),
-        'section'  => 'footer_section',
-        'settings' => 'footer_text',
-        'type'     => 'text',
-    ));
-
-    // Footer Background Color Setting
-    $wp_customize->add_setting('footer_bg_color', array(
-        'default'           => '#989084',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport'         => 'postMessage',
-    ));
-
-    // Footer Background Color Control
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            'footer_bg_color_control',
-            array(
-                'label'    => __('Footer Background Color', 'mittema'),
-                'section'  => 'footer_section',
-                'settings' => 'footer_bg_color',
-            )
-        )
-    );
-
-    // Footer Text Color Setting
-    $wp_customize->add_setting('footer_text_color', array(
-        'default'           => '#ffffff',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport'         => 'postMessage',
-    ));
-
-    // Footer Text Color Control
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            'footer_text_color_control',
-            array(
-                'label'    => __('Footer Text Color', 'mittema'),
-                'section'  => 'footer_section',
-                'settings' => 'footer_text_color',
-            )
-        )
-    );
+    // Text section title, subtitle, content
+    mittema_customize_text_input( $wp_customize, 'text_section_title', __( 'Your Section Title', 'mittema' ), 'Text Section Title', 'text_section', 'sanitize_text_field' );
+    mittema_customize_text_input( $wp_customize, 'text_section_subtitle', __( 'Your Section Subtitle', 'mittema' ), 'Text Section Subtitle', 'text_section', 'sanitize_text_field' );
+    mittema_customize_textarea( $wp_customize, 'text_section_content', __( 'Your content goes here.', 'mittema' ), 'Text Section Content', 'text_section', 'wp_kses_post' );
 }
-add_action('customize_register', 'mittema_customize_register');
 
-function mittema_cards_customizer($wp_customize) {
-    // Add a Section for Cards
-    $wp_customize->add_section('home_cards_section', array(
-        'title'       => __('Homepage Cards', 'mittema'),
-        'priority'    => 110,
-        'description' => __('Customize the cards on the homepage.', 'mittema'),
+/**
+ * Customize Footer Section
+ */
+function mittema_customize_footer_section( $wp_customize ) {
+    $wp_customize->add_section( 'footer_section', array(
+        'title'       => __( 'Footer Settings', 'mittema' ),
+        'priority'    => 120,
+        'description' => __( 'Customize the footer content.', 'mittema' ),
     ));
 
-    // Loop to Add Multiple Cards (e.g., 3 cards)
-    for ($i = 1; $i <= 3; $i++) {
-        // Card Title
-        $wp_customize->add_setting("card_{$i}_title", array(
-            'default'           => __("Card Title {$i}", 'mittema'),
-            'sanitize_callback' => 'sanitize_text_field',
-        ));
-        $wp_customize->add_control("card_{$i}_title_control", array(
-            'label'    => __("Card {$i} Title", 'mittema'),
-            'section'  => 'home_cards_section',
-            'settings' => "card_{$i}_title",
-            'type'     => 'text',
-        ));
+    mittema_customize_text_input( $wp_customize, 'footer_text', __( '© 2024 Your Website. All Rights Reserved.', 'mittema' ), 'Footer Text', 'footer_section', 'sanitize_text_field' );
+    mittema_customize_color_input( $wp_customize, 'footer_bg_color', '#989084', 'Footer Background Color', 'footer_section' );
+    mittema_customize_color_input( $wp_customize, 'footer_text_color', '#ffffff', 'Footer Text Color', 'footer_section' );
+}
 
-        // Card Text
-        $wp_customize->add_setting("card_{$i}_text", array(
-            'default'           => __("This is the description for card {$i}.", 'mittema'),
-            'sanitize_callback' => 'sanitize_textarea_field',
-        ));
-        $wp_customize->add_control("card_{$i}_text_control", array(
-            'label'    => __("Card {$i} Text", 'mittema'),
-            'section'  => 'home_cards_section',
-            'settings' => "card_{$i}_text",
-            'type'     => 'textarea',
-        ));
+/**
+ * Customize Cards Section
+ */
+function mittema_customize_cards_section( $wp_customize ) {
+    $wp_customize->add_section( 'home_cards_section', array(
+        'title'       => __( 'Homepage Cards', 'mittema' ),
+        'priority'    => 110,
+        'description' => __( 'Customize the cards on the homepage.', 'mittema' ),
+    ));
 
-        // Card Image
-        $wp_customize->add_setting("card_{$i}_image", array(
-            'default'           => '',
-            'sanitize_callback' => 'esc_url_raw',
-        ));
-        $wp_customize->add_control(
-            new WP_Customize_Image_Control(
-                $wp_customize,
-                "card_{$i}_image_control",
-                array(
-                    'label'    => __("Card {$i} Image", 'mittema'),
-                    'section'  => 'home_cards_section',
-                    'settings' => "card_{$i}_image",
-                )
-            )
-        );
-
-        // Card Button URL
-        $wp_customize->add_setting("card_{$i}_button_url", array(
-            'default'           => '#',
-            'sanitize_callback' => 'esc_url_raw',
-        ));
-        $wp_customize->add_control("card_{$i}_button_url_control", array(
-            'label'    => __("Card {$i} Button URL", 'mittema'),
-            'section'  => 'home_cards_section',
-            'settings' => "card_{$i}_button_url",
-            'type'     => 'url',
-        ));
-
-        // Card Button Text
-        $wp_customize->add_setting("card_{$i}_button_text", array(
-            'default'           => __('Learn More', 'mittema'),
-            'sanitize_callback' => 'sanitize_text_field',
-        ));
-        $wp_customize->add_control("card_{$i}_button_text_control", array(
-            'label'    => __("Card {$i} Button Text", 'mittema'),
-            'section'  => 'home_cards_section',
-            'settings' => "card_{$i}_button_text",
-            'type'     => 'text',
-        ));
+    // Loop for card settings
+    for ( $i = 1; $i <= 3; $i++ ) {
+        mittema_customize_text_input( $wp_customize, "card_{$i}_title", __("Card Title {$i}", 'mittema'), "Card {$i} Title", 'home_cards_section', 'sanitize_text_field' );
+        mittema_customize_textarea( $wp_customize, "card_{$i}_text", __("This is the description for card {$i}.", 'mittema'), "Card {$i} Text", 'home_cards_section', 'sanitize_textarea_field' );
+        mittema_customize_image_input( $wp_customize, "card_{$i}_image", '', "Card {$i} Image", 'home_cards_section' );
+        mittema_customize_text_input( $wp_customize, "card_{$i}_button_url", '#', "Card {$i} Button URL", 'home_cards_section', 'esc_url_raw' );
+        mittema_customize_text_input( $wp_customize, "card_{$i}_button_text", 'Learn More', "Card {$i} Button Text", 'home_cards_section', 'sanitize_text_field' );
     }
 }
-add_action('customize_register', 'mittema_cards_customizer');
 
-function mittema_customize_register_gallery($wp_customize) {
-    $wp_customize->add_section('gallery_section', array(
-        'title'    => __('Gallery Section', 'mittema'),
+/**
+ * Customize Gallery Section
+ */
+function mittema_customize_gallery_section( $wp_customize ) {
+    $wp_customize->add_section( 'gallery_section', array(
+        'title'    => __( 'Gallery Section', 'mittema' ),
         'priority' => 30,
     ));
 
-    // Tilføj op til 30 billeder med placeholders
-    for ($i = 1; $i <= 30; $i++) {
-        $wp_customize->add_setting("gallery_image_$i", array(
-            'default'           => get_template_directory_uri() . '/assets/placeholder' . $i . '.jpg',
-            'sanitize_callback' => 'esc_url_raw',
-        ));
-
-        $wp_customize->add_control(new WP_Customize_Image_Control(
-            $wp_customize,
-            "gallery_image_$i",
-            array(
-                'label'    => __("Gallery Image $i", 'mittema'),
-                'section'  => 'gallery_section',
-                'settings' => "gallery_image_$i",
-            )
-        ));
+    for ( $i = 1; $i <= 30; $i++ ) {
+        mittema_customize_image_input( $wp_customize, "gallery_image_{$i}", get_template_directory_uri() . '/assets/placeholder' . $i . '.jpg', "Gallery Image {$i}", 'gallery_section' );
     }
 }
-add_action('customize_register', 'mittema_customize_register_gallery');
 
 /**
- * Render the site title for the selective refresh partial.
- *
- * @return void
+ * Helper function to create a text input control
  */
-function mittema_customize_partial_blogname() {
-    bloginfo( 'name' );
+function mittema_customize_text_input( $wp_customize, $setting, $default, $label, $section, $sanitize_callback ) {
+    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => $sanitize_callback ));
+    $wp_customize->add_control( $setting, array(
+        'label'    => __( $label, 'mittema' ),
+        'section'  => $section,
+        'type'     => 'text',
+    ));
 }
 
 /**
- * Render the site tagline for the selective refresh partial.
- *
- * @return void
+ * Helper function to create a textarea control
  */
-function mittema_customize_partial_blogdescription() {
-    bloginfo( 'description' );
+function mittema_customize_textarea( $wp_customize, $setting, $default, $label, $section, $sanitize_callback ) {
+    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => $sanitize_callback ));
+    $wp_customize->add_control( $setting, array(
+        'label'    => __( $label, 'mittema' ),
+        'section'  => $section,
+        'type'     => 'textarea',
+    ));
 }
 
 /**
- * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
+ * Helper function to create a color input control
  */
-function mittema_customize_preview_js() {
-    wp_enqueue_script( 'mittema-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), _S_VERSION, true );
+function mittema_customize_color_input( $wp_customize, $setting, $default, $label, $section ) {
+    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => 'sanitize_hex_color' ));
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $setting, array(
+        'label'    => __( $label, 'mittema' ),
+        'section'  => $section,
+        'settings' => $setting,
+    )));
 }
-add_action( 'customize_preview_init', 'mittema_customize_preview_js' );
 
 /**
- * Custom CSS for the theme customizer.
+ * Helper function to create an image input control
  */
-function mittema_customize_css() {
-    ?>
-    <style type="text/css">
-        .site-title a {
-            color: #<?php echo get_theme_mod( 'header_textcolor' ); ?>;
-        }
-    </style>
-    <?php
+function mittema_customize_image_input( $wp_customize, $setting, $default, $label, $section ) {
+    $wp_customize->add_setting( $setting, array( 'default' => $default, 'sanitize_callback' => 'esc_url_raw' ));
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $setting, array(
+        'label'    => __( $label, 'mittema' ),
+        'section'  => $section,
+        'settings' => $setting,
+     )));
 }
-add_action( 'wp_head', 'mittema_customize_css' );
 
 /**
- * Custom template tags for this theme.
+ * Prints HTML with meta information for the current post-date/time.
  */
-require get_template_directory() . '/inc/template-tags.php';
+function mittema_posted_on() {
+    $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
 
-/**
- * Functions which enhance the theme by hooking into WordPress.
- */
-require get_template_directory() . '/inc/template-functions.php';
+    if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+        $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+    }
 
-/**
- * Load Jetpack compatibility file.
- */
-if ( defined( 'JETPACK__VERSION' ) ) {
-    require get_template_directory() . '/inc/jetpack.php';
+    $time_string = sprintf( $time_string,
+        esc_attr( get_the_date( DATE_W3C ) ),
+        esc_html( get_the_date() ),
+        esc_attr( get_the_modified_date( DATE_W3C ) ),
+        esc_html( get_the_modified_date() )
+    );
+
+    $posted_on = sprintf(
+        esc_html_x( 'Posted on %s', 'post date', 'mittema' ),
+        '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
+    );
+
+    echo '<span class="posted-on">' . $posted_on . '</span>'; // WPCS: XSS OK.
 }
+
+/**
+ * Prints HTML with meta information for the current author.
+ */
+function mittema_posted_by() {
+    $byline = sprintf(
+        esc_html_x( 'by %s', 'post author', 'mittema' ),
+        '<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
+    );
+
+    echo '<span class="byline"> ' . $byline . '</span>'; // WPCS: XSS OK.
+}
+
+// Resten af din functions.php fil...
+

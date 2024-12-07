@@ -29,8 +29,6 @@
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php mittema_post_thumbnail(); ?>
-
 	<div class="entry-content">
 		<?php
 		the_content(
@@ -58,6 +56,5 @@
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php mittema_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->
