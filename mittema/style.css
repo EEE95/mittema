@@ -1001,6 +1001,11 @@ textarea {
     }
 }
 
+.logo{
+	margin-top: auto;
+	margin-bottom: 20px;
+}
+
 /* SOME links */
 .social-sharing {
     display: flex;
@@ -1045,7 +1050,6 @@ textarea {
 .back-to-top i {
     font-size: 18px; 
 }
-
 
 
 /*---------- Forside ----------*/

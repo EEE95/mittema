@@ -26,9 +26,6 @@
 			<div class="line-one"></div>
         	<div class="line-two"></div>
         </button>
-        <div class="logo">
-            <?php the_custom_logo(); ?>
-        </div>
         <!-- The sliding menu -->
         <nav id="sliding-menu" class="sliding-menu">
             <?php
@@ -40,5 +37,8 @@
             );
             ?>
         </nav>
+        <div class="logo">
+            <?php the_custom_logo(); ?>
+        </div>
     </div>
 </div>
