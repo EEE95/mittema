@@ -258,6 +258,9 @@ if ( ! function_exists( 'mittema_back_to_top' ) ) :
     add_action( 'wp_footer', 'mittema_back_to_top' );
 endif;
 
+/**
+ * Enqueue styles and scripts for the Back to Top button.
+ */
 function mittema_back_to_top_assets() {
     // Custom CSS for the Back to Top button
     wp_enqueue_style( 'mittema-back-to-top', get_template_directory_uri() . '/css/style.css', array(), '1.0' );

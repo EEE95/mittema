@@ -43,18 +43,8 @@
 
 //back to top
 jQuery(document).ready(function ($) {
-    // Display the Back to Top button when scrolling down
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.back-to-top').fadeIn();
-        } else {
-            $('.back-to-top').fadeOut();
-        }
-    });
-
-    // Smooth scroll to the top
     $('.back-to-top').on('click', function (e) {
         e.preventDefault();
-        $('html, body').animate({ scrollTop: 0 }, '300');
+        $('html, body').animate({ scrollTop: 0 }, 500);
     });
 });
