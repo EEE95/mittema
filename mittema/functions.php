@@ -165,13 +165,52 @@ function mittema_customize_general_settings( $wp_customize ) {
     }
 
     // Typography settings
-    $wp_customize->add_section( 'typography', array( 'title' => __( 'Typografi', 'mittema' ), 'priority' => 35 ));
-    $wp_customize->add_setting( 'font_family', array( 'default' => 'Arial, sans-serif', 'transport' => 'refresh' ));
+    $wp_customize->add_section( 'typography', array(
+        'title'    => __( 'Typografi', 'mittema' ),
+        'priority' => 35,
+    ) );
+
+    // font types 
+    $wp_customize->add_setting( 'font_family', array(
+        'default'           => 'Roboto, sans-serif',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    
     $wp_customize->add_control( 'font_family', array(
-        'label'    => __( 'Vælg skrifttype', 'mittema' ),
-        'section'  => 'typography',
-        'type'     => 'text',
-    ));
+        'label'   => __( 'Vælg primær skrifttype', 'mittema' ),
+        'section' => 'typography',
+        'type'    => 'select',
+        'choices' => array(
+            'Roboto, sans-serif'  => __( 'Roboto', 'mittema' ),
+            'Open Sans, sans-serif' => __( 'Open Sans', 'mittema' ),
+            'Lato, sans-serif' => __( 'Lato', 'mittema' ),
+            'Montserrat, sans-serif' => __( 'Montserrat', 'mittema' ),
+            'Merriweather, serif' => __( 'Merriweather', 'mittema' ),
+            'Georgia, serif' => __( 'Georgia', 'mittema' ),
+        ),
+    ) );
+    
+    $wp_customize->add_setting( 'font_secondary_family', array(
+        'default'           => 'Arial, sans-serif',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    
+    $wp_customize->add_control( 'font_secondary_family', array(
+        'label'   => __( 'Vælg sekundær skrifttype', 'mittema' ),
+        'section' => 'typography',
+        'type'    => 'select',
+        'choices' => array(
+            'Arial, sans-serif' => __( 'Arial', 'mittema' ),
+            'Verdana, sans-serif' => __( 'Verdana', 'mittema' ),
+            'Georgia, serif' => __( 'Georgia', 'mittema' ),
+            'Times New Roman, serif' => __( 'Times New Roman', 'mittema' ),
+            'Courier New, monospace' => __( 'Courier New', 'mittema' ),
+            'Tahoma, sans-serif' => __( 'Tahoma', 'mittema' ),
+        ),
+    ) );
+
 }
 
 function mittema_customizer_css() {
@@ -188,11 +227,22 @@ function mittema_customizer_css() {
             --color-dark: <?php echo get_theme_mod( '--color-dark', '#343a40' ); ?>;
             --color-white: <?php echo get_theme_mod( '--color-white', '#fefefe' ); ?>;
             --color-black: <?php echo get_theme_mod( '--color-black', '#030303' ); ?>;
+            --font-primary: <?php echo esc_attr( get_theme_mod( 'font_family', 'Roboto, sans-serif' ) ); ?>;
+            --font-secondary: <?php echo esc_attr( get_theme_mod( 'font_secondary_family', 'Arial, sans-serif' ) ); ?>;
+        }
+    </style>
+    <style type="text/css">
+        body {
+            font-family: var(--font-primary);
+        }
+        .secondary-font {
+            font-family: var(--font-secondary);
         }
     </style>
     <?php
 }
 add_action( 'wp_head', 'mittema_customizer_css', 100 );
+
 
 
 /**
