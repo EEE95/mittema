@@ -74,7 +74,7 @@ function mittema_customize_register_gallery($wp_customize) {
         'priority' => 30,
     ));
 
-    // Tilføj op til 30 billeder med placeholders
+    // add op to 30 photos with default placeholder
     for ($i = 1; $i <= 30; $i++) {
         $wp_customize->add_setting("gallery_image_$i", array(
             'default'           => get_template_directory_uri() . '/assets/placeholder' . $i . '.jpg',
@@ -144,9 +144,15 @@ function mittema_customize_general_settings( $wp_customize ) {
 
     $colors = array(
         '--color-primary-color'   => '#080808',
-        '--color-bg-light' => '#c6bdaf', 
-        '--color-bg-dark' => '#989084',
-        'accent_color'    => '#F6B176',
+        '--color-secondary'       => '#989084',
+        '--color-accent'          => '#F6B176',
+        '--color-bg'              => '#b0a89d',
+        '--color-bg-light'        => '#c6bdaf',
+        '--color-bg-dark'         => '#989084',
+        '--color-light'           => '#f8f9fa',
+        '--color-dark'            => '#343a40',
+        '--color-white'           => '#fefefe',
+        '--color-black'           => '#030303',
     );
 
     foreach ( $colors as $setting => $default ) {
@@ -158,15 +164,6 @@ function mittema_customize_general_settings( $wp_customize ) {
         )));
     }
 
-    // Background Color
-    $wp_customize->add_section( 'colors', array( 'title' => __( 'Farver', 'mittema' ), 'priority' => 30 ));
-    $wp_customize->add_setting( 'background_color', array( 'default' => '#ffffff', 'transport' => 'refresh' ));
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'background_color', array(
-        'label'    => __( 'Baggrundsfarve', 'mittema' ),
-        'section'  => 'colors',
-        'settings' => 'background_color',
-    )));
-
     // Typography settings
     $wp_customize->add_section( 'typography', array( 'title' => __( 'Typografi', 'mittema' ), 'priority' => 35 ));
     $wp_customize->add_setting( 'font_family', array( 'default' => 'Arial, sans-serif', 'transport' => 'refresh' ));
@@ -176,6 +173,27 @@ function mittema_customize_general_settings( $wp_customize ) {
         'type'     => 'text',
     ));
 }
+
+function mittema_customizer_css() {
+    ?>
+    <style type="text/css">
+        :root {
+            --color-primary: <?php echo get_theme_mod( '--color-primary-color', '#080808' ); ?>;
+            --color-secondary: <?php echo get_theme_mod( '--color-secondary', '#989084' ); ?>;
+            --color-accent: <?php echo get_theme_mod( '--color-accent', '#F6B176' ); ?>;
+            --color-bg: <?php echo get_theme_mod( '--color-bg', '#b0a89d' ); ?>;
+            --color-bg-light: <?php echo get_theme_mod( '--color-bg-light', '#c6bdaf' ); ?>;
+            --color-bg-dark: <?php echo get_theme_mod( '--color-bg-dark', '#989084' ); ?>;
+            --color-light: <?php echo get_theme_mod( '--color-light', '#f8f9fa' ); ?>;
+            --color-dark: <?php echo get_theme_mod( '--color-dark', '#343a40' ); ?>;
+            --color-white: <?php echo get_theme_mod( '--color-white', '#fefefe' ); ?>;
+            --color-black: <?php echo get_theme_mod( '--color-black', '#030303' ); ?>;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_head', 'mittema_customizer_css', 100 );
+
 
 /**
  * Customize Hero Section
