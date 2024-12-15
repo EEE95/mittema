@@ -1051,17 +1051,31 @@ textarea {
 /*---------- Forside ----------*/
 /* Hero-section */
 .hero-section {
-	position: relative;
+    position: relative;
     width: 100%;
-	overflow: hidden;
+    height: 90vh;
+    overflow: hidden;
 }
 
 .hero-section video {
-    width: calc(100% + 50px);
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    position: absolute;
     top: 0;
-	z-index: 1;
+    left: 0;
+    z-index: 1;
+}
+
+.hero-section .hero-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 .hero-content {
@@ -1071,9 +1085,9 @@ textarea {
     top: 18%;
     padding-left: calc(var(--gutter) * 2);
     z-index: 3;
-    opacity: 0; /* Start with opacity 0 */
-    transform: translateY(20px); /* Start with a slight downward offset */
-    animation: fadeIn 2s ease-in-out forwards; /* Apply the animation */
+    opacity: 0; 
+    transform: translateY(20px); 
+    animation: fadeIn 2s ease-in-out forwards;
 }
 
 @keyframes fadeIn {
@@ -1093,26 +1107,55 @@ textarea {
 }
 
 @media (max-width: 1250px) {
-	.hero-content {
-		font-size: calc(var(--font-size-large) * 2);
-	}
+    .hero-content {
+        font-size: calc(var(--font-size-large) * 2);
+    }
 }
 
 @media (max-width: 875px) {
-	.hero-content {
-		font-size: calc(var(--font-size-large));
-	}
+    .hero-content {
+        font-size: calc(var(--font-size-large));
+    }
 }
 
 @media (max-width: 550px) {
-	.hero-content {
-		font-size: calc(var(--font-size-medium));
-	}
+    .hero-content {
+        font-size: calc(var(--font-size-medium));
+    }
 
-	.hero-content h2{
-		display: none;
-	}
+    .hero-content h2{
+        display: none;
+    }
 }
+
+/* Chevron */
+.chevron-wrapper {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.chevron {
+    font-size: 30px;
+    color: var(--color-light);
+    animation: bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0) rotate(0deg); 
+    }
+    50% {
+        transform: translateY(10px) rotate(0deg); 
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+
 
 /* text / intro sektion */
 .text-section {

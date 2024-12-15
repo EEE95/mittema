@@ -199,17 +199,61 @@ add_action( 'wp_head', 'mittema_customizer_css', 100 );
  * Customize Hero Section
  */
 function mittema_customize_hero_section( $wp_customize ) {
+    // Add Hero Section Customizer Panel
     $wp_customize->add_section( 'hero_section', array(
         'title'       => __( 'Hero Section', 'mittema' ),
         'priority'    => 30,
         'description' => __( 'Customize the hero section.', 'mittema' ),
     ));
 
-    // Hero background video, title, subtitle
-    mittema_customize_text_input( $wp_customize, 'hero_video', '', 'Hero Background Video', 'hero_section', 'esc_url_raw' );
-    mittema_customize_text_input( $wp_customize, 'hero_title', __( 'Welcome to My Site', 'mittema' ), 'Hero Title', 'hero_section', 'sanitize_text_field' );
-    mittema_customize_text_input( $wp_customize, 'hero_subtitle', __( 'Your Hero Subtitle', 'mittema' ), 'Hero Subtitle', 'hero_section', 'sanitize_text_field' );
+    // Hero Background Video
+    $wp_customize->add_setting( 'hero_video', array(
+        'default'           => get_template_directory_uri() . '/assets/hero.mp4',  // Default video
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'hero_video', array(
+        'label'    => __( 'Hero Video', 'mittema' ),
+        'section'  => 'hero_section',
+        'settings' => 'hero_video',
+    )));
+
+    // Hero Background Image
+    $wp_customize->add_setting( 'hero_image', array(
+        'default'           => get_template_directory_uri() . '/assets/default-hero.jpg',  // Default image
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'hero_image', array(
+        'label'    => __( 'Hero Image', 'mittema' ),
+        'section'  => 'hero_section',
+        'settings' => 'hero_image',
+    )));
+
+    // Hero Title
+    $wp_customize->add_setting( 'hero_title', array(
+        'default'           => __( 'Welcome to My Site', 'mittema' ),
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control( 'hero_title', array(
+        'label'    => __( 'Hero Title', 'mittema' ),
+        'section'  => 'hero_section',
+        'type'     => 'text',
+    ));
+
+    // Hero Subtitle
+    $wp_customize->add_setting( 'hero_subtitle', array(
+        'default'           => __( 'Your Hero Subtitle', 'mittema' ),
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control( 'hero_subtitle', array(
+        'label'    => __( 'Hero Subtitle', 'mittema' ),
+        'section'  => 'hero_section',
+        'type'     => 'text',
+    ));
 }
+add_action( 'customize_register', 'mittema_customize_hero_section' );
+
 
 /**
  * Customize Text Section

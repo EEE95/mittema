@@ -11,26 +11,34 @@ get_header();
 ?>
 
 <main id="primary" class="site-main">
-	<div class="hero-section">
-		<?php
-			// Define the default video URL
-			$default_hero_video = get_template_directory_uri() . './assest/hero.mp4';
+    <div class="hero-section">
+        <?php
+            // Get the hero video and image URLs from the customizer
+            $hero_video = get_theme_mod( 'hero_video', get_template_directory_uri() . '/assest/hero.mp4' ); // Default to placeholder video
+            $hero_image = get_theme_mod( 'hero_image' );
+            $hero_title = get_theme_mod( 'hero_title', __( 'Welcome to My Site', 'mittema' ) );
+            $hero_subtitle = get_theme_mod( 'hero_subtitle', __( 'Your Hero Subtitle', 'mittema' ) );
 
-			// Get the hero video URL from the customizer setting
-			$hero_video = get_theme_mod( 'hero_video', $default_hero_video );
+            // Check if a video URL exists, otherwise show an image
+            if ( ! empty( $hero_video ) && empty( $hero_image ) ) : ?>
+                <video class="hero-video" autoplay muted loop playsinline>
+                    <source src="<?php echo esc_url( $hero_video ); ?>" type="video/mp4">
+                    <?php _e( 'Your browser does not support the video tag.', 'mittema' ); ?>
+                </video>
+            <?php elseif ( ! empty( $hero_image ) ) : ?>
+                <div class="hero-image" style="background-image: url('<?php echo esc_url( $hero_image ); ?>');"></div>
+            <?php endif; ?>
 
-			$hero_title = get_theme_mod( 'hero_title', __( 'Welcome to My Site', 'mittema' ) );
-			$hero_subtitle = get_theme_mod( 'hero_subtitle', __( 'Your Hero Subtitle', 'mittema' ) );
-		?>
-		<video class="hero-video" autoplay muted loop playsinline>
-			<source src="<?php echo esc_url( $hero_video ); ?>" type="video/mp4">
-			<?php _e( 'Your browser does not support the video tag.', 'mittema' ); ?>
-		</video>
-		<div class="hero-content">
-			<h1 class="hero-title"><?php echo esc_html( $hero_title ); ?></h1>
-			<h2 class="hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></h2>
-		</div>
-	</div>
+        <div class="hero-content">
+            <h1 class="hero-title"><?php echo esc_html( $hero_title ); ?></h1>
+            <h2 class="hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></h2>
+        </div>
+    </div>
+
+        <!-- Chevron -->
+        <div class="chevron-wrapper">
+            <i class="fas fa-chevron-down chevron"></i>
+        </div>
 
 	<div class="text-section">
 		<?php
