@@ -33,6 +33,11 @@ get_header();
 		endwhile; // End of the loop.
 		?>
 
+		<div class="social-sharing">
+			<?php mittema_social_sharing(); ?>
+		</div>
+
+
 	</main><!-- #main -->
 
 <?php

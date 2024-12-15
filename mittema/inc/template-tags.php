@@ -203,3 +203,66 @@ if ( ! function_exists( 'wp_body_open' ) ) :
 		do_action( 'wp_body_open' );
 	}
 endif;
+
+function mittema_enqueue_styles() {
+    // Tilføj Font Awesome
+    wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', array(), '5.15.4' );
+}
+add_action( 'wp_enqueue_scripts', 'mittema_enqueue_styles' );
+
+if ( ! function_exists( 'mittema_social_sharing' ) ) :
+    /**
+     * Displays social sharing buttons with icons for Facebook, Instagram, LinkedIn, and Pinterest.
+     */
+    function mittema_social_sharing() {
+        $url   = urlencode( get_permalink() );
+        $title = urlencode( get_the_title() );
+        $image = urlencode( wp_get_attachment_url( get_post_thumbnail_id() ) ); // Bruger post thumbnail som Pinterest-image
+
+        echo '<div class="social-sharing">';
+
+        // Facebook
+        echo '<a href="https://www.facebook.com/sharer.php?u=' . $url . '" target="_blank" rel="nofollow" title="' . esc_attr__( 'Share on Facebook', 'mittema' ) . '">';
+        echo '<i class="fab fa-facebook-f"></i>'; // Font Awesome Facebook icon
+        echo '</a>';
+
+        // Instagram
+		echo '<a href="https://www.instagram.com/sharer.php" target="_blank" rel="nofollow" title="' . esc_attr__( 'Share on Instagram', 'mittema' ) . '">';
+        echo '<i class="fab fa-instagram"></i>'; // Font Awesome Instagram icon
+        echo '</a>';
+
+        // LinkedIn
+        echo '<a href="https://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '" target="_blank" rel="nofollow" title="' . esc_attr__( 'Share on LinkedIn', 'mittema' ) . '">';
+        echo '<i class="fab fa-linkedin-in"></i>'; // Font Awesome LinkedIn icon
+        echo '</a>';
+
+        // Pinterest
+        echo '<a href="https://pinterest.com/pin/create/button/?url=' . $url . '&media=' . $image . '&description=' . $title . '" target="_blank" rel="nofollow" title="' . esc_attr__( 'Share on Pinterest', 'mittema' ) . '">';
+        echo '<i class="fab fa-pinterest"></i>'; // Font Awesome Pinterest icon
+        echo '</a>';
+
+        echo '</div>';
+    }
+endif;
+
+
+if ( ! function_exists( 'mittema_back_to_top' ) ) :
+    /**
+     * Displays a "Back to Top" button.
+     */
+    function mittema_back_to_top() {
+        echo '<a href="#top" class="back-to-top" aria-label="' . esc_attr__( 'Back to Top', 'mittema' ) . '">' .
+             '<i class="fas fa-chevron-up"></i>' . // Font Awesome icon
+             '</a>';
+    }
+    add_action( 'wp_footer', 'mittema_back_to_top' );
+endif;
+
+function mittema_back_to_top_assets() {
+    // Custom CSS for the Back to Top button
+    wp_enqueue_style( 'mittema-back-to-top', get_template_directory_uri() . '/css/style.css', array(), '1.0' );
+
+    // Add jQuery script for smooth scrolling
+    wp_enqueue_script( 'mittema-back-to-top', get_template_directory_uri() . '/js/customizer.js', array( 'jquery' ), '1.0', true );
+}
+add_action( 'wp_enqueue_scripts', 'mittema_back_to_top_assets' );

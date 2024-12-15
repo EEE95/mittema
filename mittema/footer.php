@@ -20,6 +20,8 @@
 				<?php echo esc_html(get_theme_mod('footer_text', __('© 2024 Your Website. All Rights Reserved.', 'mittema'))); ?>
 			</p>
 		</div>
+		
+    	<?php mittema_back_to_top(); ?>
 	</footer>
 
 </div>
