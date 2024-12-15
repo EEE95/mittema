@@ -14,6 +14,28 @@ if ( ! defined( '_S_VERSION' ) ) {
 
 require_once get_template_directory() . '/inc/template-tags.php';
 
+/**
+ * Create default pages when the theme is activated
+ */
+function mytheme_create_default_pages() {
+    $home_page = get_page_by_title('Hjem');
+
+    // Hvis siden ikke findes, opretter vi den
+    if (!$home_page) {
+        $home_page_id = wp_insert_post([
+            'post_title'   => 'Hjem', // Sidenavn
+            'post_content' => 'Velkommen til vores hjemmeside!', // Indhold
+            'post_status'  => 'publish', // Publicer straks
+            'post_type'    => 'page', // Angiv, at det er en side
+        ]);
+
+        // Indstil den som forside
+        update_option('page_on_front', $home_page_id);
+        update_option('show_on_front', 'page'); // Brug statisk forside
+    }
+}
+add_action('after_switch_theme', 'mytheme_create_default_pages');
+
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.

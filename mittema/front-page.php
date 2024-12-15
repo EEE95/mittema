@@ -1,8 +1,4 @@
 <?php
-/*
-Template Name: Index Template
-*/
-
 get_header();
 ?>
 
